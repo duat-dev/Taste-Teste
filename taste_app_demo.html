@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taste - Descoberta de Restaurantes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #FF6B47 0%, #FF8E53 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .search-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white p-4 sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <span class="text-orange-500 font-bold text-lg">T</span>
+                </div>
+                <h1 class="text-xl font-bold">Taste</h1>
+            </div>
+            <div class="flex space-x-4">
+                <i class="fas fa-heart text-white"></i>
+                <i class="fas fa-user text-white"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-md mx-auto pb-20">
+        <!-- Search Section -->
+        <div class="p-4">
+            <div class="bg-white rounded-2xl p-4 card-shadow mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">
+                    <i class="fas fa-magic text-orange-500 mr-2"></i>
+                    Busca Inteligente com IA
+                </h2>
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        placeholder="Ex: jantar romântico no centro ou sushi com bons drinks..."
+                        class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                        id="searchInput"
+                    >
+                    <button class="absolute right-2 top-2 bg-orange-500 text-white p-2 rounded-lg hover:bg-orange-600 transition-colors" onclick="performSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">
+                    💡 Digite livremente o que você quer! Nossa IA entende sua intenção
+                </p>
+            </div>
+
+            <!-- Location -->
+            <div class="bg-white rounded-2xl p-4 card-shadow mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-map-marker-alt text-orange-500"></i>
+                        <div>
+                            <p class="font-medium text-gray-800">Sua localização</p>
+                            <p class="text-sm text-gray-500">Centro, Porto Alegre</p>
+                        </div>
+                    </div>
+                    <button class="text-orange-500 text-sm font-medium">Alterar</button>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Categorias Populares</h3>
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="bg-white rounded-xl p-3 text-center card-shadow">
+                        <div class="text-2xl mb-1">🍕</div>
+                        <p class="text-xs text-gray-600">Pizza</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 text-center card-shadow">
+                        <div class="text-2xl mb-1">🍔</div>
+                        <p class="text-xs text-gray-600">Hambúrguer</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 text-center card-shadow">
+                        <div class="text-2xl mb-1">🍣</div>
+                        <p class="text-xs text-gray-600">Japonesa</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 text-center card-shadow">
+                        <div class="text-2xl mb-1">🍝</div>
+                        <p class="text-xs text-gray-600">Italiana</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Restaurants -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-lg font-semibold text-gray-800">Destaques Próximos</h3>
+                    <button class="text-orange-500 text-sm font-medium flex items-center">
+                        <i class="fas fa-map mr-1"></i> Ver no Mapa
+                    </button>
+                </div>
+                
+                <!-- Restaurant Cards -->
+                <div class="space-y-4" id="restaurantList">
+                    <div class="bg-white rounded-2xl p-4 card-shadow">
+                        <div class="flex space-x-3">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=80&h=80&fit=crop&crop=center" 
+                                 alt="Pizzaria Bella Vista" class="w-16 h-16 rounded-xl object-cover">
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Pizzaria Bella Vista</h4>
+                                        <p class="text-sm text-gray-500">Pizza • 1.2 km</p>
+                                        <div class="flex items-center mt-1">
+                                            <div class="flex text-yellow-400 text-sm">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-1">4.5</span>
+                                        </div>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-red-500 transition-colors">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="text-sm text-green-600 font-medium">25-35 min</span>
+                                    <span class="text-sm text-gray-500">Taxa: R$ 5,99</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1 mt-2">
+                                    <span class="bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded-full">Romântico</span>
+                                    <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">Delivery</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-4 card-shadow">
+                        <div class="flex space-x-3">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&h=80&fit=crop&crop=center" 
+                                 alt="Burger House" class="w-16 h-16 rounded-xl object-cover">
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Burger House</h4>
+                                        <p class="text-sm text-gray-500">Hambúrguer • 0.8 km</p>
+                                        <div class="flex items-center mt-1">
+                                            <div class="flex text-yellow-400 text-sm">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-1">4.3</span>
+                                        </div>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-red-500 transition-colors">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="text-sm text-green-600 font-medium">20-30 min</span>
+                                    <span class="text-sm text-gray-500">Taxa: R$ 4,50</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1 mt-2">
+                                    <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded-full">Artesanal</span>
+                                    <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">Premium</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-4 card-shadow">
+                        <div class="flex space-x-3">
+                            <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=80&h=80&fit=crop&crop=center" 
+                                 alt="Sushi Zen" class="w-16 h-16 rounded-xl object-cover">
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Sushi Zen</h4>
+                                        <p class="text-sm text-gray-500">Japonesa • 1.5 km</p>
+                                        <div class="flex items-center mt-1">
+                                            <div class="flex text-yellow-400 text-sm">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-1">4.7</span>
+                                        </div>
+                                    </div>
+                                    <button class="text-red-500 transition-colors">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="text-sm text-green-600 font-medium">35-45 min</span>
+                                    <span class="text-sm text-gray-500">Taxa: R$ 7,99</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1 mt-2">
+                                    <span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">Autêntico</span>
+                                    <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">Peixe Fresco</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+        <div class="max-w-md mx-auto flex justify-around py-2">
+            <button class="flex flex-col items-center py-2 px-4 text-orange-500">
+                <i class="fas fa-home text-lg"></i>
+                <span class="text-xs mt-1">Início</span>
+            </button>
+            <button class="flex flex-col items-center py-2 px-4 text-gray-400">
+                <i class="fas fa-search text-lg"></i>
+                <span class="text-xs mt-1">Buscar</span>
+            </button>
+            <button class="flex flex-col items-center py-2 px-4 text-gray-400">
+                <i class="fas fa-heart text-lg"></i>
+                <span class="text-xs mt-1">Favoritos</span>
+            </button>
+            <button class="flex flex-col items-center py-2 px-4 text-gray-400">
+                <i class="fas fa-user text-lg"></i>
+                <span class="text-xs mt-1">Perfil</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Search Loading Modal -->
+    <div id="searchModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-6 m-4 max-w-sm w-full text-center">
+            <div class="search-animation mb-4">
+                <i class="fas fa-magic text-4xl text-orange-500"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">IA Analisando sua busca...</h3>
+            <p class="text-sm text-gray-600 mb-4">Interpretando: "<span id="searchQuery"></span>"</p>
+            <div class="space-y-2 text-left text-sm text-gray-600">
+                <div class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    <span>Analisando intenção...</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    <span>Identificando tipo de comida...</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-spinner fa-spin text-orange-500 mr-2"></i>
+                    <span>Buscando restaurantes próximos...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function performSearch() {
+            const input = document.getElementById('searchInput');
+            const query = input.value.trim();
+            
+            if (!query) {
+                alert('Digite algo para buscar!');
+                return;
+            }
+
+            // Show loading modal
+            document.getElementById('searchQuery').textContent = query;
+            document.getElementById('searchModal').classList.remove('hidden');
+
+            // Simulate AI processing
+            setTimeout(() => {
+                document.getElementById('searchModal').classList.add('hidden');
+                
+                // Show results (simulate filtering)
+                alert(`🤖 IA interpretou sua busca: "${query}"\n\n✨ Resultados encontrados baseados em:\n• Tipo de comida identificado\n• Localização atual\n• Preferências detectadas\n\n📍 Mostrando restaurantes próximos que combinam com sua busca!`);
+                
+                // Clear input
+                input.value = '';
+            }, 3000);
+        }
+
+        // Allow Enter key to search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Add some interactivity to heart buttons
+        document.querySelectorAll('.fa-heart').forEach(heart => {
+            heart.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (this.classList.contains('far')) {
+                    this.classList.remove('far');
+                    this.classList.add('fas');
+                    this.classList.add('text-red-500');
+                } else {
+                    this.classList.add('far');
+                    this.classList.remove('fas');
+                    this.classList.remove('text-red-500');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
