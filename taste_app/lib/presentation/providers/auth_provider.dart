@@ -92,7 +92,7 @@ class AuthNotifier extends StateNotifier<AppAuthState> {
       } else {
         state = state.copyWith(
           isLoading: false,
-          error: 'Falha no login',
+          error: response.error ?? 'Falha no login',
         );
         return false;
       }
@@ -127,7 +127,7 @@ class AuthNotifier extends StateNotifier<AppAuthState> {
       } else {
         state = state.copyWith(
           isLoading: false,
-          error: 'Falha no cadastro',
+          error: response.error ?? 'Falha no cadastro',
         );
         return false;
       }

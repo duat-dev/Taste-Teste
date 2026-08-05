@@ -36,14 +36,25 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final authNotifier = ref.read(authProvider.notifier);
     
     try {
-      await authNotifier.signInWithEmailAndPassword(
+      final success = await authNotifier.signInWithEmailAndPassword(
         _emailController.text.trim(),
         _passwordController.text,
       );
       
-      if (mounted) {
+      if (success && mounted) {
         // Navegar para a página principal após login bem-sucedido
         context.go('/main');
+      } else if (mounted) {
+        // Se não teve sucesso, verificar se há erro no estado
+        final authState = ref.read(authProvider);
+        if (authState.error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(authState.error!),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
       }
     } catch (e) {
       // Fallback: tenta login local para desenvolvimento

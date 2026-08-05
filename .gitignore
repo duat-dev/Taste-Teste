@@ -32,6 +32,7 @@ dist/
 .DS_Store
 Thumbs.db
 nul
+._*
 
 # Logs
 logs
@@ -57,6 +58,8 @@ coverage/
 .pub-cache/
 .pub/
 build/
+flutter_cache_backup/
+flutter_cache_temp/
 *.g.dart
 *.freezed.dart
 *.mocks.dart
